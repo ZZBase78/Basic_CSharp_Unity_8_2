@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3905834970445067758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2779459114165236990}
+  - component: {fileID: 1993740970200167431}
+  m_Layer: 0
+  m_Name: World
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2779459114165236990
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905834970445067758}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1993740970200167431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905834970445067758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9e892e8d1ab51640b36aaf1f3f7d629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  systemPrefabs:
+  - {fileID: 478319866606310531, guid: b8211e8a4efa1e94ea29f49d9dc36d9b, type: 3}
+  - {fileID: 4381357085409557655, guid: 5df83aacbfec25347bed480f66d5f0d3, type: 3}
+  - {fileID: 959653166934113776, guid: 5dd72c824b3f89d4980475e759c3ed64, type: 3}
+  - {fileID: 8898992388504622898, guid: 74ce661a024170743a444d8115d1d9cc, type: 3}
+  - {fileID: 4202038352207287163, guid: 8d937e8dfbd93844c8c9548f1b52ac3a, type: 3}
+  - {fileID: 793911176363280093, guid: 4ebe9307e714d5944bf648f59e1c3916, type: 3}
+  mazePrefabs:
+  - {fileID: 3152153039419790699, guid: 821cba81f39fbe74f857bdefc103d45a, type: 3}
+  - {fileID: 171652153945528700, guid: 09fb1c2a1db96344ea75cceb7d25f41c, type: 3}
+  - {fileID: 5631027890707317885, guid: 764b120701e6de6418b2e6b7acdf799f, type: 3}
+  bonusPrefabs:
+  - {fileID: 2098242122297384588, guid: 7bd6d4d7476f3f240a569e60381c0a89, type: 3}
