@@ -10,22 +10,28 @@ namespace ZZBase.Maze
         private int sizeY;
         private GameObject parent;
         private MazePoint[,] map;
+        private Settings settings;
+        private PrefabLibrary prefabLibrary;
+        private GameObjectFactory gameObjectFactory;
 
-        public Maze(GameObject _parent, int _sizeX, int _sizeY)
+        public Maze(GameObject _parent, int _sizeX, int _sizeY, Settings settings, PrefabLibrary prefabLibrary, GameObjectFactory gameObjectFactory)
         {
+            this.settings = settings;
+            this.prefabLibrary = prefabLibrary;
+            this.gameObjectFactory = gameObjectFactory;
             parent = _parent;
             sizeX = _sizeX * 2 + 1;
             sizeY = _sizeY * 2 + 1;
             map = new MazePoint[sizeX, sizeY];
         }
         ///////////////////////////////////////////////
-        public static float GetWorldXFromMazeX(int x)
+        public float GetWorldXFromMazeX(int x)
         {
-            return Settings.cellWidth / 2f * (float)x;
+            return settings.cellWidth / 2f * (float)x;
         }
-        public static float GetWorldYFromMazeY(int y)
+        public float GetWorldYFromMazeY(int y)
         {
-            return Settings.cellHeight / 2f * (float)y;
+            return settings.cellHeight / 2f * (float)y;
         }
         private bool IsEven(int value)
         {
@@ -42,12 +48,12 @@ namespace ZZBase.Maze
                         if (IsEven(y))
                         {
                             //MazeWallCross
-                            map[x, y] = new MazeWallCross(parent, x, y);
+                            map[x, y] = new MazeWallCross(parent, x, y, this, gameObjectFactory, prefabLibrary, settings);
                         }
                         else
                         {
                             //MazeWall, vertical
-                            map[x, y] = new MazeWall(parent, x, y, true);
+                            map[x, y] = new MazeWall(parent, x, y, true, this, gameObjectFactory, prefabLibrary, settings);
                         }
                     }
                     else
@@ -55,12 +61,12 @@ namespace ZZBase.Maze
                         if (IsEven(y))
                         {
                             //MazeWall, horizontal
-                            map[x, y] = new MazeWall(parent, x, y, false);
+                            map[x, y] = new MazeWall(parent, x, y, false, this, gameObjectFactory, prefabLibrary, settings);
                         }
                         else
                         {
                             //MazeCell
-                            map[x, y] = new MazeCell(parent, x, y);
+                            map[x, y] = new MazeCell(parent, x, y, this, gameObjectFactory, prefabLibrary, settings);
                         }
                     }
                 }

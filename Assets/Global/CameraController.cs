@@ -12,16 +12,24 @@ namespace ZZBase.Maze
         private Vector3 offset;
         private Timer upCameraDistantionTimer;
         private float upCameraDistantion;
-        public CameraController(Player player)
+        private PrefabLibrary prefabLibrary;
+        private EventManager eventManager;
+        private NotificationController notificationController;
+
+        public CameraController(Player player, PrefabLibrary prefabLibrary, EventManager eventManager, GameObjectFactory gameObjectFactory, NotificationController notificationController)
         {
+            this.prefabLibrary = prefabLibrary;
+            this.eventManager = eventManager;
+            this.gameObjectFactory = gameObjectFactory;
+            this.notificationController = notificationController;
             moveSpeed = 2f;
             this.player = player;
-            gameObject = GameObjectFactory.Instantiate(PrefabLibrary.GetSystemPrefab(0));
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(0));
             offset = defaultOffset;
-            EventManager.actionLateUpdate += LateUpdate;
-            upCameraDistantionTimer = new Timer();
+            eventManager.actionLateUpdate += LateUpdate;
+            upCameraDistantionTimer = new Timer(eventManager);
             upCameraDistantion = 0f;
-            EventManager.playerTakeBonus += PlayerTakeBonus;
+            eventManager.playerTakeBonus += PlayerTakeBonus;
         }
         private void PlayerTakeBonus(Bonus bonus)
         {
@@ -29,7 +37,7 @@ namespace ZZBase.Maze
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования
-                NotificationController.Add(10 + (int)bonus.bonusType, $"Бонус: увеличение обзора", time, true, true);
+                notificationController.Add(10 + (int)bonus.bonusType, $"Бонус: увеличение обзора", time, true, true);
                 upCameraDistantionTimer.AppendTime(time, upCameraDistantionBonusTimeOut);
                 upCameraDistantion = 10f;
             }
@@ -51,9 +59,9 @@ namespace ZZBase.Maze
 
         public override void Dispose()
         {
-            EventManager.playerTakeBonus -= PlayerTakeBonus;
+            eventManager.playerTakeBonus -= PlayerTakeBonus;
             upCameraDistantionTimer.Dispose();
-            EventManager.actionLateUpdate -= LateUpdate;
+            eventManager.actionLateUpdate -= LateUpdate;
             base.Dispose();
         }
     }

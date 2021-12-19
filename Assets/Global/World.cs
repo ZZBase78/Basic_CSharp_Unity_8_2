@@ -11,6 +11,7 @@ namespace ZZBase.Maze
         [SerializeField] private GameObject[] mazePrefabs;
         [SerializeField] private GameObject[] bonusPrefabs;
         private Core core;
+        private EventManager eventManager;
 
         public GameObject[] GetSystemPrefabs()
         {
@@ -27,19 +28,20 @@ namespace ZZBase.Maze
 
         private void Update()
         {
-            EventManager.Update();
+            eventManager.Update();
         }
         private void LateUpdate()
         {
-            EventManager.LateUpdate();
+            eventManager.LateUpdate();
         }
         private void FixedUpdate()
         {
-            EventManager.FixedUpdate();
+            eventManager.FixedUpdate();
         }
         private void Awake()
         {
             core = new Core(this);
+            eventManager = core.GetEventManager();
         }
         private void Start()
         {

@@ -4,13 +4,23 @@ using UnityEngine;
 
 namespace ZZBase.Maze
 {
-    public class Settings
+    public sealed class Settings
     {
-        public const int mazeWidth = 10;
-        public const int mazeHeight = 10;
-        public const float cellWidth = 3;
-        public const float cellHeight = 3;
-        public const float wallThickness = 0.2f;
-        public const int maxScore = 500;
+        public int mazeWidth { get; }
+        public int mazeHeight { get; }
+        public float cellWidth { get; }
+        public float cellHeight { get; }
+        public float wallThickness { get; }
+        public int maxScore { get; }
+
+        public Settings() 
+        {
+            mazeWidth = 10;
+            mazeHeight = 10;
+            cellWidth = 3;
+            cellHeight = 3;
+            wallThickness = 0.2f;
+            maxScore = 500;
+        }
     }
 }

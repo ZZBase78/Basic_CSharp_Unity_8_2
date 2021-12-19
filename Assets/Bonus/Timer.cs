@@ -7,12 +7,15 @@ namespace ZZBase.Maze
 {
     public sealed class Timer : IDisposable
     {
-        private float _time;
         private Action action;
+
+        private float _time;
         public float time { get { return _time; } }
+        private EventManager eventManager;
         
-        public Timer()
+        public Timer(EventManager eventManager)
         {
+            this.eventManager = eventManager;
             _time = 0;
             action = delegate { };
         }
@@ -20,8 +23,8 @@ namespace ZZBase.Maze
         {
             _time += appendTime;
             this.action = action;
-            EventManager.actionUpdate -= Update;
-            EventManager.actionUpdate += Update;
+            eventManager.actionUpdate -= Update;
+            eventManager.actionUpdate += Update;
         }
         private void Update()
         {
@@ -34,12 +37,12 @@ namespace ZZBase.Maze
                 _time = 0;
                 // Выполняем связанное действие и отписываемся от update
                 action?.Invoke(); 
-                EventManager.actionUpdate -= Update;
+                eventManager.actionUpdate -= Update;
             }
         }
         public void Dispose()
         {
-            EventManager.actionUpdate -= Update;
+            eventManager.actionUpdate -= Update;
         }
     }
 }

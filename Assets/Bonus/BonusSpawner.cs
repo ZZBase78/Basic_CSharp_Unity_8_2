@@ -8,12 +8,21 @@ namespace ZZBase.Maze
     {
         private const int maxBonuses = 10;
         private List<Bonus> list;
+        private EventManager eventManager;
+        private Settings settings;
+        private PrefabLibrary prefabLibrary;
+        private Maze maze;
 
-        public BonusSpawner()
+        public BonusSpawner(GameObjectFactory gameObjectFactory, EventManager eventManager, Settings settings, Maze maze, PrefabLibrary prefabLibrary)
         {
+            this.gameObjectFactory = gameObjectFactory;
+            this.eventManager = eventManager;
+            this.settings = settings;
+            this.prefabLibrary = prefabLibrary;
+            this.maze = maze;
             list = new List<Bonus>();
-            gameObject = GameObjectFactory.InstantiateEmpty("Bonuses");
-            EventManager.actionUpdate += Update;
+            gameObject = gameObjectFactory.InstantiateEmpty("Bonuses");
+            eventManager.actionUpdate += Update;
         }
         private void Update()
         {
@@ -21,13 +30,13 @@ namespace ZZBase.Maze
         }
         private void SpawnNewBonus() 
         {
-            int x = Random.Range(0, Settings.mazeWidth) * 2 + 1;
-            int y = Random.Range(0, Settings.mazeHeight) * 2 + 1;
-            float xPosition = Maze.GetWorldXFromMazeX(x);
-            float yPosition = Maze.GetWorldYFromMazeY(y);
+            int x = Random.Range(0, settings.mazeWidth) * 2 + 1;
+            int y = Random.Range(0, settings.mazeHeight) * 2 + 1;
+            float xPosition = maze.GetWorldXFromMazeX(x);
+            float yPosition = maze.GetWorldYFromMazeY(y);
             if (!IsBonusInXY(xPosition, yPosition))
             {
-                Bonus newBonus = new Bonus(this, xPosition, yPosition);
+                Bonus newBonus = new Bonus(this, xPosition, yPosition, prefabLibrary, gameObjectFactory, eventManager);
                 list.Add(newBonus);
             }
         }
@@ -53,7 +62,7 @@ namespace ZZBase.Maze
             {
                 bonus.Dispose();
             }
-            EventManager.actionUpdate -= Update;
+            eventManager.actionUpdate -= Update;
             base.Dispose();
         }
     }

@@ -11,16 +11,25 @@ namespace ZZBase.Maze
         private float speed;
         private InputController inputController;
         private int score;
+        private Maze maze;
+        private PrefabLibrary prefabLibrary;
+        private EventManager eventManager;
+        private NotificationController notificationController;
 
-        public Player(InputController inputController)
+        public Player(InputController inputController, Maze maze, PrefabLibrary prefabLibrary, EventManager eventManager, GameObjectFactory gameObjectFactory, NotificationController notificationController)
         {
+            this.maze = maze;
+            this.prefabLibrary = prefabLibrary;
+            this.eventManager = eventManager;
+            this.gameObjectFactory = gameObjectFactory;
+            this.notificationController = notificationController;
             this.inputController = inputController;
             speed = defaultSpeed;
-            Vector3 playerPosition = new Vector3(Maze.GetWorldXFromMazeX(1), 1f, Maze.GetWorldYFromMazeY(1));
-            gameObject = GameObjectFactory.Instantiate(PrefabLibrary.GetSystemPrefab(2), playerPosition);
+            Vector3 playerPosition = new Vector3(maze.GetWorldXFromMazeX(1), 1f, maze.GetWorldYFromMazeY(1));
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(2), playerPosition);
             rigitBody = gameObject.GetComponent<Rigidbody>();
-            EventManager.actionFixedUpdate += FixedUpdate;
-            EventManager.playerTakeBonus += PlayerTakeBonus;
+            eventManager.actionFixedUpdate += FixedUpdate;
+            eventManager.playerTakeBonus += PlayerTakeBonus;
         }
         private void PlayerTakeBonus(Bonus bonus)
         {
@@ -28,7 +37,7 @@ namespace ZZBase.Maze
             {
                 int newscore = bonus.GetScore();
                 score += newscore;
-                NotificationController.Add(0, $"Собрано {newscore}, всего {score} очка(ов)", 3f, false, false);
+                notificationController.Add(0, $"Собрано {newscore}, всего {score} очка(ов)", 3f, false, false);
             }
         }
         private void FixedUpdate()
@@ -45,8 +54,8 @@ namespace ZZBase.Maze
         }
         public override void Dispose()
         {
-            EventManager.playerTakeBonus -= PlayerTakeBonus;
-            EventManager.actionFixedUpdate -= FixedUpdate;
+            eventManager.playerTakeBonus -= PlayerTakeBonus;
+            eventManager.actionFixedUpdate -= FixedUpdate;
             base.Dispose();
         }
     }

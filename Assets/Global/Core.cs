@@ -5,14 +5,26 @@ using UnityEngine;
 
 namespace ZZBase.Maze
 {
-    public class Core
+    public sealed class Core
     {
+        private PrefabLibrary prefabLibrary;
+        private EventManager eventManager;
+        private NotificationController notificationController;
+        private GameObjectFactory gameObjectFactory;
+        private Settings settings;
+        private Maze maze;
+
         public Core(World world)
         {
-            PrefabLibrary.Init(world);
-            EventManager.Init();
-            NotificationController.Init();
-            GameObjectFactory.Init();
+            settings = new Settings();
+            gameObjectFactory = new GameObjectFactory();
+            prefabLibrary = new PrefabLibrary(world);
+            eventManager = new EventManager();
+            notificationController = new NotificationController(gameObjectFactory, prefabLibrary, eventManager);
+        }
+        public EventManager GetEventManager()
+        {
+            return eventManager;
         }
         public void SetCursorVisible(bool value)
         {
@@ -32,23 +44,23 @@ namespace ZZBase.Maze
             SetCursorVisible(false);
 
             //Event system
-            GameObjectFactory.Instantiate(PrefabLibrary.GetSystemPrefab(3));
+            gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(3));
 
             //Direction light
-            GameObjectFactory.Instantiate(PrefabLibrary.GetSystemPrefab(1));
+            gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(1));
 
-            GameObject mazeParent = GameObjectFactory.InstantiateEmpty("Maze");
-            Maze maze = new Maze(mazeParent, Settings.mazeWidth, Settings.mazeHeight);
+            GameObject mazeParent = gameObjectFactory.InstantiateEmpty("Maze");
+            maze = new Maze(mazeParent, settings.mazeWidth, settings.mazeHeight, settings, prefabLibrary, gameObjectFactory);
             maze.Generate();
             maze.Show();
 
-            BonusSpawner bonusSpawner = new BonusSpawner();
+            BonusSpawner bonusSpawner = new BonusSpawner(gameObjectFactory, eventManager, settings, maze, prefabLibrary);
 
-            InputController inputController = new InputController();
+            InputController inputController = new InputController(eventManager, notificationController);
 
-            Player player = new Player(inputController);
+            Player player = new Player(inputController, maze, prefabLibrary, eventManager, gameObjectFactory, notificationController);
 
-            CameraController cameraController = new CameraController(player);
+            CameraController cameraController = new CameraController(player, prefabLibrary, eventManager, gameObjectFactory, notificationController);
         }
         public void OnDestroy()
         {

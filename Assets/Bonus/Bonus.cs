@@ -14,12 +14,17 @@ namespace ZZBase.Maze
         private BonusSpawner bonusSpawner;
         private int score;
         private float time;
+        private PrefabLibrary prefabLibrary;
+        private EventManager eventManager;
         private BonusType _bonusType;
         public BonusType bonusType { get { return _bonusType; } }
 
 
-        public Bonus(BonusSpawner bonusSpawner, float x, float y)
+        public Bonus(BonusSpawner bonusSpawner, float x, float y, PrefabLibrary prefabLibrary, GameObjectFactory gameObjectFactory, EventManager eventManager)
         {
+            this.prefabLibrary = prefabLibrary;
+            this.gameObjectFactory = gameObjectFactory;
+            this.eventManager = eventManager;
             this.x = x;
             this.y = y;
             this.bonusSpawner = bonusSpawner;
@@ -39,7 +44,7 @@ namespace ZZBase.Maze
         private void Show()
         {
             Vector3 position = new Vector3(x, 0, y);
-            gameObject = GameObjectFactory.Instantiate(PrefabLibrary.GetBonusPrefab(0), position);
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetBonusPrefab(0), position);
             BonusBehaviour bonusBehaviour = gameObject.AddComponent<BonusBehaviour>();
             bonusBehaviour.onTriggerEnter += OnTriggerEnter;
             gameObject.transform.SetParent(bonusSpawner.GetGameObject().transform);
@@ -64,7 +69,7 @@ namespace ZZBase.Maze
         {
             if (other.CompareTag("Player"))
             {
-                EventManager.PlayerTakeBonus(this);
+                eventManager.PlayerTakeBonus(this);
                 //Спаунер должен выполнить событие последним, т.к. будет его уничтожать
                 bonusSpawner.DeleteBonus(this);
             }

@@ -14,20 +14,24 @@ namespace ZZBase.Maze
         private float downSpeedBonusRate;
         private Timer swapDirectionTimer;
         private bool swapDirection;
+        private EventManager eventManager;
+        private NotificationController notificationController;
 
         private Vector3 _force;
         public Vector3 force { get { return _force; } }
 
-        public InputController()
+        public InputController(EventManager eventManager, NotificationController notificationController)
         {
-            EventManager.actionUpdate += Update;
-            EventManager.playerTakeBonus += PlayerTakeBonus;
+            this.eventManager = eventManager;
+            this.notificationController = notificationController;
+            eventManager.actionUpdate += Update;
+            eventManager.playerTakeBonus += PlayerTakeBonus;
             mainController = true;
-            upSpeedTimer = new Timer();
+            upSpeedTimer = new Timer(eventManager);
             upSpeedBonusRate = 1f;
-            downSpeedTimer = new Timer();
+            downSpeedTimer = new Timer(eventManager);
             downSpeedBonusRate = 1f;
-            swapDirectionTimer = new Timer();
+            swapDirectionTimer = new Timer(eventManager);
             swapDirection = false;
         }
         private void PlayerTakeBonus(Bonus bonus)
@@ -36,21 +40,21 @@ namespace ZZBase.Maze
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования
-                NotificationController.Add(10 + (int)bonus.bonusType, $"Бонус: увеличение скорости", time, true, true);
+                notificationController.Add(10 + (int)bonus.bonusType, $"Бонус: увеличение скорости", time, true, true);
                 upSpeedTimer.AppendTime(time, UpSpeedBonusTimeOut);
                 upSpeedBonusRate = 2f;
             }else if (bonus.bonusType == Bonus.BonusType.DownSpeed)
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования
-                NotificationController.Add(10 + (int)bonus.bonusType, $"Бонус: уменьшение скорости", time, true, true);
+                notificationController.Add(10 + (int)bonus.bonusType, $"Бонус: уменьшение скорости", time, true, true);
                 downSpeedTimer.AppendTime(time, DownSpeedBonusTimeOut);
                 downSpeedBonusRate = 2f;
             }else if (bonus.bonusType == Bonus.BonusType.SwapDirection)
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования
-                NotificationController.Add(10 + (int) bonus.bonusType, $"Бонус: инверсия управления", time, true, true);
+                notificationController.Add(10 + (int) bonus.bonusType, $"Бонус: инверсия управления", time, true, true);
                 swapDirectionTimer.AppendTime(time, SwapDirectionBonusTimeOut);
                 swapDirection = true;
             }
@@ -91,13 +95,13 @@ namespace ZZBase.Maze
                 if (mainController)
                 {
                     //1 - Идентификатор сообщения изменения управления
-                    NotificationController.Stop(1);
-                    NotificationController.Add(1, "Управление с клавиатуры", 3f, false, false);
+                    notificationController.Stop(1);
+                    notificationController.Add(1, "Управление с клавиатуры", 3f, false, false);
                 }
                 else
                 {
-                    NotificationController.Stop(1);
-                    NotificationController.Add(1, "Управление мышью", 3f, false, false);
+                    notificationController.Stop(1);
+                    notificationController.Add(1, "Управление мышью", 3f, false, false);
                 }
             }
             
@@ -107,8 +111,8 @@ namespace ZZBase.Maze
             upSpeedTimer.Dispose();
             downSpeedTimer.Dispose();
             swapDirectionTimer.Dispose();
-            EventManager.playerTakeBonus -= PlayerTakeBonus;
-            EventManager.actionUpdate -= Update;
+            eventManager.playerTakeBonus -= PlayerTakeBonus;
+            eventManager.actionUpdate -= Update;
         }
     }
 }

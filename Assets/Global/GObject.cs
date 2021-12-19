@@ -11,14 +11,16 @@ namespace ZZBase.Maze
     public class GObject : IDisposable
     {
         protected GameObject gameObject;
+        protected GameObjectFactory gameObjectFactory;
 
+        
         public GameObject GetGameObject()
         {
             return gameObject;
         }
         public virtual void Dispose()
         {
-            GameObjectFactory.Destroy(gameObject);
+            gameObjectFactory.Destroy(gameObject);
         }
     }
 }

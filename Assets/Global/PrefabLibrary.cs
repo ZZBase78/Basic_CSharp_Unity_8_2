@@ -4,28 +4,28 @@ using UnityEngine;
 
 namespace ZZBase.Maze
 {
-    public static class PrefabLibrary
+    public sealed class PrefabLibrary
     {
-        private static GameObject[] systemPrefabs;
-        private static GameObject[] mazePrefabs;
-        private static GameObject[] BonusPrefabs;
+        private GameObject[] systemPrefabs;
+        private GameObject[] mazePrefabs;
+        private GameObject[] BonusPrefabs;
 
-        public static void Init(World world)
+        public PrefabLibrary(World world)
         {
             systemPrefabs = world.GetSystemPrefabs();
             mazePrefabs = world.GetMazePrefabs();
             BonusPrefabs = world.GetBonusPrefabs();
         }
 
-        public static GameObject GetSystemPrefab(int index)
+        public GameObject GetSystemPrefab(int index)
         {
             return systemPrefabs[index];
         }
-        public static GameObject GetMazePrefab(int index)
+        public GameObject GetMazePrefab(int index)
         {
             return mazePrefabs[index];
         }
-        public static GameObject GetBonusPrefab(int index)
+        public GameObject GetBonusPrefab(int index)
         {
             return BonusPrefabs[index];
         }

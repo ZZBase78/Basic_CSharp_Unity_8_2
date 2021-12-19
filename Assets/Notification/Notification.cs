@@ -16,6 +16,8 @@ namespace ZZBase.Maze
         private bool showtime;
         private Text textUI;
         private float targetScale;
+        private PrefabLibrary prefabLibrary;
+        private EventManager eventManager;
 
         private int _id;
         public int id { get { return _id; } }
@@ -25,14 +27,18 @@ namespace ZZBase.Maze
         private void Show()
         {
             //NotificationPanel
-            gameObject = GameObjectFactory.Instantiate(PrefabLibrary.GetSystemPrefab(5));
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(5));
         }
         private void Hide()
         {
-            GameObjectFactory.Destroy(gameObject);
+            gameObjectFactory.Destroy(gameObject);
         }
-        public Notification(GameObject parent, int id, float x, float y, string text, float time, bool showtime)
+        public Notification(GameObject parent, int id, float x, float y, string text, float time, bool showtime, GameObjectFactory gameObjectFactory, PrefabLibrary prefabLibrary, EventManager eventManager)
         {
+            this.gameObjectFactory = gameObjectFactory;
+            this.prefabLibrary = prefabLibrary;
+            this.eventManager = eventManager;
+
             Show();
             gameObject.transform.SetParent(parent.transform);
             gameObject.transform.localScale = new Vector3(0, 0, 0);
@@ -45,7 +51,7 @@ namespace ZZBase.Maze
             this.text = text;
             this.time = time;
             this.showtime = showtime;
-            EventManager.actionUpdate += Update;
+            eventManager.actionUpdate += Update;
             UpdateTextUI();
         }
         public void AppendData(float time, string text, bool showtime, bool appendTime)
@@ -126,7 +132,7 @@ namespace ZZBase.Maze
         }
         public override void Dispose()
         {
-            EventManager.actionUpdate -= Update;
+            eventManager.actionUpdate -= Update;
             base.Dispose();
         }
     }

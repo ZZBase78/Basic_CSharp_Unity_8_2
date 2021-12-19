@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace ZZBase.Maze
 {
-    public static class EventManager
+    public sealed class EventManager
     {
-        public static event Action actionUpdate = delegate { };
-        public static event Action actionLateUpdate = delegate { };
-        public static event Action actionFixedUpdate = delegate { };
+        public event Action actionUpdate = delegate { };
+        public event Action actionLateUpdate = delegate { };
+        public event Action actionFixedUpdate = delegate { };
 
-        public static event Action<Bonus> playerTakeBonus;
+        public event Action<Bonus> playerTakeBonus;
 
-        public static void Init()
+        public EventManager()
         {
             actionUpdate = delegate { };
             actionLateUpdate = delegate { };
@@ -22,20 +22,20 @@ namespace ZZBase.Maze
             playerTakeBonus = delegate (Bonus bonus) { };
         }
 
-        public static void PlayerTakeBonus(Bonus bonus)
+        public void PlayerTakeBonus(Bonus bonus)
         {
             playerTakeBonus(bonus);
         }
 
-        public static void Update()
+        public void Update()
         {
             actionUpdate();
         }
-        public static void LateUpdate()
+        public void LateUpdate()
         {
             actionLateUpdate();
         }
-        public static void FixedUpdate()
+        public void FixedUpdate()
         {
             actionFixedUpdate();
         }
