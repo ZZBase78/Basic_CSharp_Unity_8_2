@@ -7,9 +7,9 @@ namespace ZZBase.Maze
 {
     public static class EventManager
     {
-        public static event Action actionUpdate = delegate { };
-        public static event Action actionLateUpdate = delegate { };
-        public static event Action actionFixedUpdate = delegate { };
+        public static event MyAction actionUpdate = delegate { };
+        public static event MyAction actionLateUpdate = delegate { };
+        public static event MyAction actionFixedUpdate = delegate { };
 
         public static event Action<Bonus> playerTakeBonus;
 
