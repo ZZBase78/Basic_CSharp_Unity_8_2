@@ -35,7 +35,7 @@ namespace ZZBase.Maze
             if (!isOpen)
             {
                 Vector3 position = new Vector3(maze.GetWorldXFromMazeX(x), 0, maze.GetWorldYFromMazeY(y));
-                gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetMazePrefab(1), position, Quaternion.identity);
+                gameObject = gameObjectFactory.Instantiate(prefabLibrary.mazeWall, position, Quaternion.identity);
                 if (isVertical)
                 {
                     gameObject.transform.localScale = new Vector3(settings.wallThickness, 1f, settings.cellHeight);

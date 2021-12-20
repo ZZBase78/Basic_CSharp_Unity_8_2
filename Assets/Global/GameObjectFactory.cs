@@ -12,11 +12,11 @@ namespace ZZBase.Maze
         }
         public GameObject Instantiate(GameObject gameObject, Vector3 position)
         {
-            return GameObject.Instantiate(gameObject, position, gameObject.transform.rotation);
+            return Instantiate(gameObject, position, gameObject.transform.rotation);
         }
         public GameObject Instantiate(GameObject gameObject)
         {
-            return GameObject.Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation);
+            return Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation);
         }
         public GameObject InstantiateEmpty(string name)
         {

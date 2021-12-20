@@ -27,7 +27,7 @@ namespace ZZBase.Maze
         private void Show()
         {
             //NotificationPanel
-            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(5));
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.notificationPanel);
         }
         private void Hide()
         {

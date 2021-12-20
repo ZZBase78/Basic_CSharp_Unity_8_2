@@ -22,7 +22,7 @@ namespace ZZBase.Maze
         private void Show()
         {
             //Canvas
-            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(4));
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.canvas);
         }
         private void Hide()
         {

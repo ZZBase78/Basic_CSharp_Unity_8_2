@@ -15,8 +15,9 @@ namespace ZZBase.Maze
         private PrefabLibrary prefabLibrary;
         private EventManager eventManager;
         private NotificationController notificationController;
+        private Settings settings;
 
-        public Player(InputController inputController, Maze maze, PrefabLibrary prefabLibrary, EventManager eventManager, GameObjectFactory gameObjectFactory, NotificationController notificationController)
+        public Player(InputController inputController, Maze maze, PrefabLibrary prefabLibrary, EventManager eventManager, GameObjectFactory gameObjectFactory, NotificationController notificationController, Settings settings)
         {
             this.maze = maze;
             this.prefabLibrary = prefabLibrary;
@@ -24,9 +25,11 @@ namespace ZZBase.Maze
             this.gameObjectFactory = gameObjectFactory;
             this.notificationController = notificationController;
             this.inputController = inputController;
+            this.settings = settings;
+
             speed = defaultSpeed;
             Vector3 playerPosition = new Vector3(maze.GetWorldXFromMazeX(1), 1f, maze.GetWorldYFromMazeY(1));
-            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(2), playerPosition);
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.player, playerPosition);
             rigitBody = gameObject.GetComponent<Rigidbody>();
             eventManager.actionFixedUpdate += FixedUpdate;
             eventManager.playerTakeBonus += PlayerTakeBonus;
@@ -38,6 +41,12 @@ namespace ZZBase.Maze
                 int newscore = bonus.GetScore();
                 score += newscore;
                 notificationController.Add(0, $"Собрано {newscore}, всего {score} очка(ов)", 3f, false, false);
+
+                if (score >= settings.maxScore)
+                {
+                    eventManager.EndGame();
+                }
+
             }
         }
         private void FixedUpdate()
@@ -47,6 +56,11 @@ namespace ZZBase.Maze
         private void Move()
         {
             rigitBody.AddForce(inputController.force * speed);
+        }
+        public void Stop()
+        {
+            rigitBody.isKinematic = true;
+            //rigitBody.isKinematic = false;
         }
         public Vector3 GetPosition()
         {

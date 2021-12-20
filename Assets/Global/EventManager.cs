@@ -7,9 +7,11 @@ namespace ZZBase.Maze
 {
     public sealed class EventManager
     {
-        public event Action actionUpdate = delegate { };
-        public event Action actionLateUpdate = delegate { };
-        public event Action actionFixedUpdate = delegate { };
+        public event Action actionUpdate;
+        public event Action actionLateUpdate;
+        public event Action actionFixedUpdate;
+
+        public event Action endGame;
 
         public event Action<Bonus> playerTakeBonus;
 
@@ -19,12 +21,19 @@ namespace ZZBase.Maze
             actionLateUpdate = delegate { };
             actionFixedUpdate = delegate { };
 
+            endGame = delegate { };
+
             playerTakeBonus = delegate (Bonus bonus) { };
         }
 
         public void PlayerTakeBonus(Bonus bonus)
         {
             playerTakeBonus(bonus);
+        }
+
+        public void EndGame()
+        {
+            endGame();
         }
 
         public void Update()

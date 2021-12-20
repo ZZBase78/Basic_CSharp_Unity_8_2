@@ -20,7 +20,7 @@ namespace ZZBase.Maze
             cellWidth = 3;
             cellHeight = 3;
             wallThickness = 0.2f;
-            maxScore = 500;
+            maxScore = 200;
         }
     }
 }

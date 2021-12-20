@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ZZBase.Maze
 {
@@ -13,12 +14,13 @@ namespace ZZBase.Maze
         private GameObjectFactory gameObjectFactory;
         private Settings settings;
         private Maze maze;
+        private Player player;
 
-        public Core(World world)
+        public Core()
         {
             settings = new Settings();
             gameObjectFactory = new GameObjectFactory();
-            prefabLibrary = new PrefabLibrary(world);
+            prefabLibrary = new PrefabLibrary();
             eventManager = new EventManager();
             notificationController = new NotificationController(gameObjectFactory, prefabLibrary, eventManager);
         }
@@ -43,14 +45,16 @@ namespace ZZBase.Maze
         {
             SetCursorVisible(false);
 
+            eventManager.endGame += EndGame;
+
             //Event system
-            gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(3));
+            gameObjectFactory.Instantiate(prefabLibrary.eventSystem);
 
             //Direction light
-            gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(1));
+            gameObjectFactory.Instantiate(prefabLibrary.directionalLight);
 
             GameObject mazeParent = gameObjectFactory.InstantiateEmpty("Maze");
-            maze = new Maze(mazeParent, settings.mazeWidth, settings.mazeHeight, settings, prefabLibrary, gameObjectFactory);
+            maze = new Maze(mazeParent, settings, prefabLibrary, gameObjectFactory);
             maze.Generate();
             maze.Show();
 
@@ -58,12 +62,25 @@ namespace ZZBase.Maze
 
             InputController inputController = new InputController(eventManager, notificationController);
 
-            Player player = new Player(inputController, maze, prefabLibrary, eventManager, gameObjectFactory, notificationController);
+            player = new Player(inputController, maze, prefabLibrary, eventManager, gameObjectFactory, notificationController, settings);
 
             CameraController cameraController = new CameraController(player, prefabLibrary, eventManager, gameObjectFactory, notificationController);
         }
+
+        private void EndGame()
+        {
+            player.Stop();
+            SetCursorVisible(true);
+            EndGame endGame = new EndGame(gameObjectFactory, prefabLibrary);
+            endGame.GetRestartButton().onClick.AddListener(RestartLevel);
+        }
+        private void RestartLevel()
+        {
+            SceneManager.LoadScene(0);
+        }
         public void OnDestroy()
         {
+            eventManager.endGame -= EndGame;
             SetCursorVisible(true);
         }
     }

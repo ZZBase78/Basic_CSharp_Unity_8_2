@@ -14,14 +14,14 @@ namespace ZZBase.Maze
         private PrefabLibrary prefabLibrary;
         private GameObjectFactory gameObjectFactory;
 
-        public Maze(GameObject _parent, int _sizeX, int _sizeY, Settings settings, PrefabLibrary prefabLibrary, GameObjectFactory gameObjectFactory)
+        public Maze(GameObject _parent, Settings settings, PrefabLibrary prefabLibrary, GameObjectFactory gameObjectFactory)
         {
             this.settings = settings;
             this.prefabLibrary = prefabLibrary;
             this.gameObjectFactory = gameObjectFactory;
             parent = _parent;
-            sizeX = _sizeX * 2 + 1;
-            sizeY = _sizeY * 2 + 1;
+            sizeX = settings.mazeWidth * 2 + 1;
+            sizeY = settings.mazeHeight * 2 + 1;
             map = new MazePoint[sizeX, sizeY];
         }
         ///////////////////////////////////////////////

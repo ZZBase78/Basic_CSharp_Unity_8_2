@@ -24,7 +24,7 @@ namespace ZZBase.Maze
             this.notificationController = notificationController;
             moveSpeed = 2f;
             this.player = player;
-            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetSystemPrefab(0));
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.mainCamera);
             offset = defaultOffset;
             eventManager.actionLateUpdate += LateUpdate;
             upCameraDistantionTimer = new Timer(eventManager);

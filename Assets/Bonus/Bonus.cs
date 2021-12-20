@@ -44,7 +44,7 @@ namespace ZZBase.Maze
         private void Show()
         {
             Vector3 position = new Vector3(x, 0, y);
-            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetBonusPrefab(0), position);
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.bonus, position);
             BonusBehaviour bonusBehaviour = gameObject.AddComponent<BonusBehaviour>();
             bonusBehaviour.onTriggerEnter += OnTriggerEnter;
             gameObject.transform.SetParent(bonusSpawner.GetGameObject().transform);
@@ -64,6 +64,7 @@ namespace ZZBase.Maze
         {
             BonusType[] bonusTypes = (BonusType[])Enum.GetValues(typeof(BonusType));
             return bonusTypes[UnityEngine.Random.Range(0, bonusTypes.Length)];
+            //return BonusType.Score;
         }
         private void OnTriggerEnter(Collider other)
         {

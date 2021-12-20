@@ -21,7 +21,7 @@ namespace ZZBase.Maze
         public override void Show()
         {
             Vector3 position = new Vector3(maze.GetWorldXFromMazeX(x), 0, maze.GetWorldYFromMazeY(y));
-            gameObject = gameObjectFactory.Instantiate(prefabLibrary.GetMazePrefab(0), position, Quaternion.identity);
+            gameObject = gameObjectFactory.Instantiate(prefabLibrary.mazeFloor, position, Quaternion.identity);
             gameObject.transform.localScale = new Vector3(settings.cellWidth, 1f, settings.cellHeight);
             gameObject.transform.parent = parent.transform;
         }
