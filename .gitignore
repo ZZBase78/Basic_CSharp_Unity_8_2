@@ -35,6 +35,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-
-# Added
-Logs/
+*.log
