@@ -10,7 +10,7 @@ namespace ZZBase.Maze
     /// </summary>
     public class GObject : IDisposable
     {
-        protected GameObject gameObject;
+        public GameObject gameObject;
         protected GameObjectFactory gameObjectFactory;
 
         
@@ -21,6 +21,8 @@ namespace ZZBase.Maze
         public virtual void Dispose()
         {
             gameObjectFactory.Destroy(gameObject);
+            //GameObject.Destroy(gameObject);
+            gameObject = null;
         }
     }
 }

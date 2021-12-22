@@ -34,9 +34,9 @@ namespace ZZBase.Maze
             eventManager.actionFixedUpdate += FixedUpdate;
             eventManager.playerTakeBonus += PlayerTakeBonus;
         }
-        private void PlayerTakeBonus(Bonus bonus)
+        private void PlayerTakeBonus(BonusData bonus)
         {
-            if (bonus.bonusType == Bonus.BonusType.Score)
+            if (bonus.bonusType == BonusData.BonusType.Score)
             {
                 int newscore = bonus.GetScore();
                 score += newscore;

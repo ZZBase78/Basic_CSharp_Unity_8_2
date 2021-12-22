@@ -31,9 +31,9 @@ namespace ZZBase.Maze
             upCameraDistantion = 0f;
             eventManager.playerTakeBonus += PlayerTakeBonus;
         }
-        private void PlayerTakeBonus(Bonus bonus)
+        private void PlayerTakeBonus(BonusData bonus)
         {
-            if (bonus.bonusType == Bonus.BonusType.UpCameraDistantion)
+            if (bonus.bonusType == BonusData.BonusType.UpCameraDistantion)
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования

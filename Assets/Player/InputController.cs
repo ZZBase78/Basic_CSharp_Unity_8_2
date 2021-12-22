@@ -34,23 +34,23 @@ namespace ZZBase.Maze
             swapDirectionTimer = new Timer(eventManager);
             swapDirection = false;
         }
-        private void PlayerTakeBonus(Bonus bonus)
+        private void PlayerTakeBonus(BonusData bonus)
         {
-            if (bonus.bonusType == Bonus.BonusType.UpSpeed)
+            if (bonus.bonusType == BonusData.BonusType.UpSpeed)
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования
                 notificationController.Add(10 + (int)bonus.bonusType, $"Бонус: увеличение скорости", time, true, true);
                 upSpeedTimer.AppendTime(time, UpSpeedBonusTimeOut);
                 upSpeedBonusRate = 2f;
-            }else if (bonus.bonusType == Bonus.BonusType.DownSpeed)
+            }else if (bonus.bonusType == BonusData.BonusType.DownSpeed)
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования
                 notificationController.Add(10 + (int)bonus.bonusType, $"Бонус: уменьшение скорости", time, true, true);
                 downSpeedTimer.AppendTime(time, DownSpeedBonusTimeOut);
                 downSpeedBonusRate = 2f;
-            }else if (bonus.bonusType == Bonus.BonusType.SwapDirection)
+            }else if (bonus.bonusType == BonusData.BonusType.SwapDirection)
             {
                 float time = bonus.GetTime();
                 //10 + (int)bonus.bonusType : Чтобы каждый тип бонуса был под своим идентификатором информирования

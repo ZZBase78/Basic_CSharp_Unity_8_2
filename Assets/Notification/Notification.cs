@@ -117,7 +117,6 @@ namespace ZZBase.Maze
         }
         private void Update()
         {
-            Scaling();
             Moving();
             TimeControl();
 
@@ -129,6 +128,7 @@ namespace ZZBase.Maze
                     UpdateTextUI();
                 }
             }
+            Scaling();
         }
         public override void Dispose()
         {

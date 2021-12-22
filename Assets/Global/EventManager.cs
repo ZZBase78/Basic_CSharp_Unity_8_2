@@ -13,7 +13,7 @@ namespace ZZBase.Maze
 
         public event Action endGame;
 
-        public event Action<Bonus> playerTakeBonus;
+        public event Action<BonusData> playerTakeBonus;
 
         public EventManager()
         {
@@ -23,10 +23,10 @@ namespace ZZBase.Maze
 
             endGame = delegate { };
 
-            playerTakeBonus = delegate (Bonus bonus) { };
+            playerTakeBonus = delegate (BonusData bonus) { };
         }
 
-        public void PlayerTakeBonus(Bonus bonus)
+        public void PlayerTakeBonus(BonusData bonus)
         {
             playerTakeBonus(bonus);
         }

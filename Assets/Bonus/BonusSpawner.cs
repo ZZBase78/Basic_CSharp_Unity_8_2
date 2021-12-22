@@ -7,11 +7,12 @@ namespace ZZBase.Maze
     public sealed class BonusSpawner : GObject
     {
         private const int maxBonuses = 10;
-        private List<Bonus> list;
+        private List<BonusData> list;
         private EventManager eventManager;
         private Settings settings;
         private PrefabLibrary prefabLibrary;
         private Maze maze;
+        private BonusController bonusController;
 
         public BonusSpawner(GameObjectFactory gameObjectFactory, EventManager eventManager, Settings settings, Maze maze, PrefabLibrary prefabLibrary)
         {
@@ -20,8 +21,9 @@ namespace ZZBase.Maze
             this.settings = settings;
             this.prefabLibrary = prefabLibrary;
             this.maze = maze;
-            list = new List<Bonus>();
+            list = new List<BonusData>();
             gameObject = gameObjectFactory.InstantiateEmpty("Bonuses");
+            bonusController = new BonusController(list, gameObject.transform, gameObjectFactory, prefabLibrary, this, eventManager);
             eventManager.actionUpdate += Update;
         }
         private void Update()
@@ -36,18 +38,19 @@ namespace ZZBase.Maze
             float yPosition = maze.GetWorldYFromMazeY(y);
             if (!IsBonusInXY(xPosition, yPosition))
             {
-                Bonus newBonus = new Bonus(this, xPosition, yPosition, prefabLibrary, gameObjectFactory, eventManager);
-                list.Add(newBonus);
+                //Bonus newBonus = new Bonus(this, xPosition, yPosition, prefabLibrary, gameObjectFactory, eventManager);
+                BonusData bonusData = new BonusData(xPosition, yPosition);
+                list.Add(bonusData);
+                bonusController.NewBonus(bonusData);
             }
         }
-        public void DeleteBonus(Bonus bonus)
+        public void DeleteBonus(BonusData bonusData)
         {
-            list.Remove(bonus);
-            bonus.Dispose();
+            list.Remove(bonusData);
         }
         private bool IsBonusInXY(float x, float y)
         {
-            foreach (Bonus bonus in list)
+            foreach (BonusData bonus in list)
             {
                 if ((bonus.x == x) && (bonus.y == y))
                 {
@@ -58,9 +61,9 @@ namespace ZZBase.Maze
         }
         public override void Dispose()
         {
-            foreach (Bonus bonus in list)
+            foreach (BonusData bonus in list)
             {
-                bonus.Dispose();
+                bonusController.Hide(bonus);
             }
             eventManager.actionUpdate -= Update;
             base.Dispose();
